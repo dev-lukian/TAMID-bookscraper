@@ -82,6 +82,7 @@ const fetchBooksOnPage = async (page, category) => {
       price: bookData[1],
       upc: bookData[2],
       rating: bookData[3],
+      image: bookData[4],
       category: category,
     };
     // 4) Push book object to pageData array
@@ -95,14 +96,15 @@ const fetchBooksOnPage = async (page, category) => {
   return pageData;
 };
 
-// Returns [title, price, upc, rating]
-// e.g. ["It's Only the Himalayas", "£45.17", "a22124811bfa8350", "Two"]
+// Returns [title, price, upc, rating image]
+// e.g. ["It's Only the Himalayas", "£45.17", "a22124811bfa8350", "Two", "http://books.toscrape.com/media/cache/6d/41/6d418a73cc7d4ecfd75ca11d854041db.jpg"]
 const fetchBook = async (page) => {
   return await Promise.all([
     fetchTitle(page),
     fetchPrice(page),
     fetchUPC(page),
     fetchRating(page),
+    fetchImage(page),
   ]);
 };
 
@@ -142,6 +144,14 @@ const fetchRating = async (page) => {
     (el) => [...el.classList][1]
   );
   return rating;
+};
+
+// Returns image url
+// e.g. "http://books.toscrape.com/media/cache/6d/41/6d418a73cc7d4ecfd75ca11d854041db.jpg"
+const fetchImage = async (page) => {
+  await page.waitForSelector("div.item > img");
+  const image = await page.$eval("div.item > img", (el) => el.src);
+  return image;
 };
 
 (async () => {
