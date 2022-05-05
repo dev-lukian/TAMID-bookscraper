@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const fs = require("fs");
+// const fs = require("fs");
 
 const homeLink = "http://books.toscrape.com/index.html";
 let browser;
@@ -177,7 +177,8 @@ const fetchImage = async (page) => {
     })
   );
 
-  await fs.writeFileSync("books.json", await JSON.stringify(allBooks));
+  // await fs.writeFileSync("books.json", await JSON.stringify(allBooks));
+  return JSON.stringify(allBooks);
 })()
   .catch((error) => console.log(error))
   .finally(async () => await browser.close());

@@ -1,0 +1,97 @@
+.app {
+  color: black;
+}
+
+.container {
+  padding: 20px;
+}
+
+.gray {
+  background-color: #f6f6f6;
+}
+
+.stickyWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 15px;
+}
+
+.accordianContent {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.inputsWrapper {
+  display: flex;
+  column-gap: 20px;
+}
+
+.filterWrapper {
+  width: 70%;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.filterItem {
+  width: 40%;
+}
+
+.clearFilterItem {
+  width: 20%;
+}
+
+.searchWrapper {
+  width: 30%;
+}
+
+.searchResultsWrapper {
+  text-align: left;
+}
+
+.searchUPC {
+  font-size: 12px;
+  text-align: left;
+}
+
+.bookCard {
+  display: flex;
+  align-items: center;
+  min-height: 100px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.imageWrapper {
+  width: 30%;
+  height: 100px;
+}
+
+.bookImage {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 70%;
+}
+
+.cardContentTop {
+  display: flex;
+  align-items: center;
+  column-gap: 15px;
+  width: 100%;
+}
+
+.bold {
+  font-weight: bold;
+}
