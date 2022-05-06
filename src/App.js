@@ -53,9 +53,8 @@ function App() {
   // Call webscraper function from Google Cloud Functions
   const fetchBooks = () => {
     setFetchingData(true);
-    console.log("test");
     axios
-      .get("/api/webscraper")
+      .get("/books")
       .then(function (response) {
         // handle success
         // Cache response data in local storage
