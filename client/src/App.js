@@ -38,16 +38,18 @@ const ratings = {
 };
 
 function App() {
-  const [loading, setLoading] = useState(false);
   const [fetchingData, setFetchingData] = useState(false);
   const [error, setError] = useState(false);
   const [search, setSearch] = useState("");
   const [ratingFilter, setRatingFilter] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState([]);
-  const [allBooks, setAllBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
 
-  const fetchData = () => {
+  const allBooks = JSON.parse(localStorage.getItem("allBooks"))
+    ? JSON.parse(localStorage.getItem("allBooks"))
+    : [];
+
+  const fetchBooks = () => {
     setFetchingData(true);
     console.log("test");
     axios
@@ -56,8 +58,8 @@ function App() {
       )
       .then(function (response) {
         // handle success
-        console.log(response);
-        setAllBooks(response.data);
+        localStorage.setItem("allBooks", JSON.stringify(response.data));
+        setFilteredBooks(response.data);
       })
       .catch(function (error) {
         // handle error
@@ -91,7 +93,6 @@ function App() {
   };
 
   useEffect(() => {
-    setLoading(true);
     let bookResults = allBooks;
 
     if (ratingFilter !== undefined && ratingFilter.length !== 0) {
@@ -116,13 +117,7 @@ function App() {
     }
 
     setFilteredBooks(bookResults);
-    setLoading(false);
   }, [search, ratingFilter, categoryFilter]);
-
-  useEffect(() => {
-    setFilteredBooks(allBooks);
-    console.log(filteredBooks);
-  }, [allBooks]);
 
   return (
     <div className="app">
@@ -132,7 +127,8 @@ function App() {
           <LoadingButton
             variant="contained"
             loading={fetchingData}
-            onClick={fetchData}
+            onClick={fetchBooks}
+            disabled={allBooks.length !== 0}
           >
             Fetch Books
           </LoadingButton>
@@ -203,13 +199,9 @@ function App() {
                       />
                     </div>
                     <div className="clearFilterItem">
-                      <LoadingButton
-                        loading={loading}
-                        fullWidth
-                        onClick={clearFilters}
-                      >
+                      <Button fullWidth onClick={clearFilters}>
                         Clear Filters
-                      </LoadingButton>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -224,11 +216,9 @@ function App() {
           </Accordion>
         </Box>
         <div className="bookResultsWrapper">
-          {loading
-            ? "hi"
-            : filteredBooks.map((book, index) => {
-                return <BookCard bookData={book} key={book.upc} />;
-              })}
+          {filteredBooks.map((book, index) => {
+            return <BookCard bookData={book} key={book.upc} />;
+          })}
         </div>
         <Snackbar
           open={error}
