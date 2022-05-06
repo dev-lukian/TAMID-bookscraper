@@ -1,24 +1,13 @@
-import { BookCard } from "./BookCard";
 import "./App.css";
+import { BookCard } from "./BookCard";
+import categories from "./categories.json";
+
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
-import books from "./books.json";
-import categories from "./categories.json";
 import { useEffect, useState } from "react";
-import {
-  Card,
-  Box,
-  Paper,
-  Typography,
-  Slider,
-  Stack,
-  Button,
-} from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-import StarIcon from "@mui/icons-material/Star";
 import Divider from "@mui/material/Divider";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Accordion from "@mui/material/Accordion";
@@ -29,6 +18,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import IconButton from "@mui/material/IconButton";
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
+
 const axios = require("axios").default;
 
 const ratings = {
@@ -47,10 +37,12 @@ function App() {
   const [categoryFilter, setCategoryFilter] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
 
+  // Pull scraped books data from local storage if cached data is there, otherwise set allBooks to empty array
   const allBooks = JSON.parse(localStorage.getItem("allBooks"))
     ? JSON.parse(localStorage.getItem("allBooks"))
     : [];
 
+  // Scroll to top of page function
   const goToTop = () => {
     window.scrollTo({
       top: 0,
@@ -58,6 +50,7 @@ function App() {
     });
   };
 
+  // Call webscraper function from Google Cloud Functions
   const fetchBooks = () => {
     setFetchingData(true);
     console.log("test");
@@ -67,6 +60,7 @@ function App() {
       )
       .then(function (response) {
         // handle success
+        // Cache response data in local storage
         localStorage.setItem("allBooks", JSON.stringify(response.data));
         setFilteredBooks(response.data);
       })
@@ -76,10 +70,12 @@ function App() {
       })
       .then(function () {
         // always executed
+        // Turn off loading state
         setFetchingData(false);
       });
   };
 
+  // Disable user from clicking Search & Filters accordian before user fetches book data
   const disabledAccordionError = () => {
     if (allBooks.length === 0) {
       setError(true);
@@ -90,6 +86,7 @@ function App() {
     setError(false);
   };
 
+  // Only trigger search function if user clicks enter
   const handleSearch = (event) => {
     if (event.key === "Enter") {
       setSearch(event.target.value);
@@ -101,28 +98,29 @@ function App() {
     setCategoryFilter([]);
   };
 
+  // Trigger if user searches or filters anything
   useEffect(() => {
     let bookResults = allBooks;
 
+    // If users filters by ratings
     if (ratingFilter !== undefined && ratingFilter.length !== 0) {
       bookResults = bookResults.filter((book) => {
         return ratingFilter.includes(ratings[book.rating]);
       });
     }
 
+    // If users filters by categories
     if (categoryFilter !== undefined && categoryFilter.length !== 0) {
       bookResults = bookResults.filter((book) => {
         return categoryFilter.includes(book.category);
       });
     }
 
+    // If user filters by UPC search
     if (search !== undefined && search !== "") {
-      console.log(search);
-      console.log(bookResults);
       bookResults = bookResults.filter((book) => {
         return book.upc.toLowerCase().match(search.toLowerCase());
       });
-      console.log(bookResults);
     }
 
     setFilteredBooks(bookResults);
