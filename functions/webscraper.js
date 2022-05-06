@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 let browser;
 const homeLink = "http://books.toscrape.com/index.html";
 
-exports.scrape = async (req, res) => {
+exports.handler = async (req, res) => {
   await mainScrape()
     .then((result) => res.send(result))
     .catch((error) => console.log(error))

@@ -55,9 +55,7 @@ function App() {
     setFetchingData(true);
     console.log("test");
     axios
-      .get(
-        "https://us-east1-tamid-bookscraper-349319.cloudfunctions.net/scrape"
-      )
+      .get("/api/webscraper")
       .then(function (response) {
         // handle success
         // Cache response data in local storage
