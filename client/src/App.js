@@ -27,6 +27,8 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 const axios = require("axios").default;
 
 const ratings = {
@@ -48,6 +50,13 @@ function App() {
   const allBooks = JSON.parse(localStorage.getItem("allBooks"))
     ? JSON.parse(localStorage.getItem("allBooks"))
     : [];
+
+  const goToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const fetchBooks = () => {
     setFetchingData(true);
@@ -239,6 +248,15 @@ function App() {
             Please wait 3-5 minutes for request to complete.
           </Alert>
         </Snackbar>
+        <IconButton
+          aria-label="back-to-top"
+          color="primary"
+          id="backToTop"
+          size="large"
+          onClick={goToTop}
+        >
+          <ArrowCircleUpIcon />
+        </IconButton>
       </Container>
     </div>
   );
