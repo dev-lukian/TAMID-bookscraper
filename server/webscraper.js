@@ -1,8 +1,50 @@
 const puppeteer = require("puppeteer");
-// const fs = require("fs");
 
-const homeLink = "http://books.toscrape.com/index.html";
 let browser;
+const homeLink = "http://books.toscrape.com/index.html";
+
+exports.scrape = async (req, res) => {
+  await mainScrape()
+    .then((result) => res.send(result))
+    .catch((error) => console.log(error))
+    .finally(async () => await browser.close());
+};
+
+const mainScrape = async () => {
+  // Launches a headless browser (browser without GUI)
+  browser = await puppeteer.launch({
+    args: [
+      "--disable-gpu",
+      "--disable-dev-shm-usage",
+      "--disable-setuid-sandbox",
+      "--no-first-run",
+      "--no-sandbox",
+      "--no-zygote",
+      "--single-process",
+    ],
+  });
+  const page = await browser.newPage();
+  await page.goto(homeLink, { waitUntil: "networkidle0" });
+  const categoryLinks = await fetchCategories(page);
+
+  let allBooks = [];
+
+  // Opens up a new page for each category, scrapes all book data in that category, and pushes to allBooks array
+  // Done in parallel using 50 pages to be scrape data much faster than doing if done synchronously (one at a time)
+  await Promise.all(
+    categoryLinks.map(async (categoryLink) => {
+      const page = await browser.newPage();
+      await page.goto(categoryLink, { waitUntil: "networkidle0" });
+      await fetchAllPages(page, categoryLink).then((response) => {
+        console.log(response.length);
+        console.log(categoryLink);
+        allBooks = allBooks.concat(response);
+      });
+    })
+  );
+
+  return JSON.stringify(allBooks);
+};
 
 // categoryLinks: array of the URLs for the first page of each category
 // There are 50 categories, so the size of categoryLinks is 50
@@ -153,32 +195,3 @@ const fetchImage = async (page) => {
   const image = await page.$eval("div.item > img", (el) => el.src);
   return image;
 };
-
-(async () => {
-  // Launches a headless browser (browser without GUI)
-  browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto(homeLink, { waitUntil: "networkidle0" });
-  const categoryLinks = await fetchCategories(page);
-
-  let allBooks = [];
-
-  // Opens up a new page for each category, scrapes all book data in that category, and pushes to allBooks array
-  // Done in parallel using 50 pages (nodes) to be scrape data much faster than doing if done synchronously (one at a time)
-  await Promise.all(
-    categoryLinks.map(async (categoryLink) => {
-      const page = await browser.newPage();
-      await page.goto(categoryLink, { waitUntil: "networkidle0" });
-      await fetchAllPages(page, categoryLink).then((response) => {
-        console.log(response.length);
-        console.log(categoryLink);
-        allBooks = allBooks.concat(response);
-      });
-    })
-  );
-
-  // await fs.writeFileSync("books.json", await JSON.stringify(allBooks));
-  return JSON.stringify(allBooks);
-})()
-  .catch((error) => console.log(error))
-  .finally(async () => await browser.close());

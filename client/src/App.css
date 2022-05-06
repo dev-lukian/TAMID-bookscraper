@@ -6,6 +6,10 @@
   padding: 20px;
 }
 
+.fetchBooksWrapper {
+  margin-bottom: 20px;
+}
+
 .gray {
   background-color: #f6f6f6;
 }
