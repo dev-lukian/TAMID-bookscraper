@@ -1,4 +1,4 @@
-import { BookCard } from "./components/BookCard";
+import { BookCard } from "./BookCard";
 import "./App.css";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
@@ -145,6 +145,7 @@ function App() {
         <Box className="stickyWrapper gray">
           <Accordion
             elevation={0}
+            className="accordian"
             disabled={allBooks.length === 0}
             onClick={disabledAccordionError}
           >

@@ -4,6 +4,9 @@
 
 .container {
   padding: 20px;
+  background-color: white;
+  margin: auto;
+  width: 100%;
 }
 
 .fetchBooksWrapper {
@@ -19,6 +22,7 @@
   top: 0;
   z-index: 10;
   padding: 15px;
+  width: 100%;
 }
 
 .accordianContent {
@@ -30,6 +34,7 @@
 .inputsWrapper {
   display: flex;
   column-gap: 20px;
+  width: 100%;
 }
 
 .filterWrapper {
@@ -69,6 +74,7 @@
   min-height: 100px;
   padding: 10px;
   margin-top: 10px;
+  width: 100%;
 }
 
 .imageWrapper {
@@ -103,6 +109,60 @@
 #backToTop {
   position: fixed;
   z-index: 10;
-  bottom: 20px;
-  right: 20px;
+  bottom: 5px;
+  right: 1vw;
+}
+
+@media screen and (max-width: 767px) {
+  .inputsWrapper {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .searchWrapper {
+    width: 100%;
+  }
+
+  .filterWrapper {
+    width: 100%;
+  }
+
+  .filterGroup {
+    flex-direction: column;
+    row-gap: 10px;
+    column-gap: 0;
+  }
+
+  .filterItem {
+    width: 100%;
+  }
+
+  .clearFilterItem {
+    width: auto;
+  }
+
+  .searchResultsWrapper {
+    text-align: center;
+  }
+
+  .bookCard {
+    flex-direction: column;
+    column-gap: 0;
+    row-gap: 5px;
+  }
+
+  .imageWrapper {
+    width: 100%;
+  }
+
+  .cardContent {
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+  }
+
+  .cardContentTop {
+    justify-content: center;
+  }
 }
