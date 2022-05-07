@@ -54,7 +54,9 @@ function App() {
   const fetchBooks = () => {
     setFetchingData(true);
     axios
-      .get("/books")
+      .get(
+        "https://us-east1-tamid-bookscraper-349319.cloudfunctions.net/webscraper"
+      )
       .then(function (response) {
         // handle success
         // Cache response data in local storage

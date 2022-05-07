@@ -5,7 +5,12 @@ const homeLink = "http://books.toscrape.com/index.html";
 
 exports.handler = async (req, res) => {
   await mainScrape()
-    .then((result) => res.send(result))
+    .then((result) => {
+      res.header("Content-Type", "application/json");
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Headers", "Content-Type");
+      res.send(result);
+    })
     .catch((error) => console.log(error))
     .finally(async () => await browser.close());
 };
