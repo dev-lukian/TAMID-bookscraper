@@ -239,11 +239,11 @@ function App() {
         </Snackbar>
         <Snackbar
           open={fetchingData}
-          autoHideDuration={300000}
+          autoHideDuration={120000}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
           <Alert severity="info" sx={{ width: "100%" }}>
-            Please wait 4-6 minutes for request to complete.
+            Please wait 1-2 minutes for request to complete.
           </Alert>
         </Snackbar>
         <IconButton
