@@ -5,7 +5,7 @@
 ## About The Project
 
 Link: https://bookscraper.netlify.app/<br>
-[![Product Name Screen Shot][website-screenshot]](https://bookscraper.netlify.app/)
+<img src="website-screenshot.png">
 
 Instead of creating API endpoints for each search/filter function on the database of books, I decided to first fetch all the books through 1 API endpoint and allow the user to execute the search/filter functions on the frontend. In this manner, UX is better as webscraping is a very time intensive operation. Also, in order to improve UX, the book data is cached in the browser after intial fetch, so that the book data is persistent after reload.
 
